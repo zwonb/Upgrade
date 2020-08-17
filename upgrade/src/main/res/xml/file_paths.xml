@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!--Uri共享外部file download-->
+    <external-files-path
+        name="upgrade"
+        path="Download/" />
+</paths>

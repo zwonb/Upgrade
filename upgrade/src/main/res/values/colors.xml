@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="upgrade_theme">#3583CA</color>
+    <!-- 通知栏小图标的颜色 -->
+    <color name="logo_bg">@color/upgrade_theme</color>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="upgrade">Upgrade</string>
+    <string name="version_name">Version:</string>
+    <string name="package_size">Package Size:</string>
+    <string name="upgrade_time">Upgrade time:</string>
+    <string name="upgrade_feature">Upgrade feature:</string>
+    <string name="download">Upgrade</string>
+    <string name="install">Install</string>
+    <string name="open_install_apk">Please enable App installation permission</string>
+    <string name="updating">Updating %d%%</string>
+</resources>
