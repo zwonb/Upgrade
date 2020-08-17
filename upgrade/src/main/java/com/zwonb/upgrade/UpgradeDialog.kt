@@ -90,11 +90,7 @@ class UpgradeDialog : DialogFragment() {
         lifecycleScope.launch(Dispatchers.Main) {
             downloadView.isEnabled = true
             val hasApk = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                try {
-                    hasApkQ(false)
-                } catch (e: Exception) {
-                    false
-                }
+                hasApkQ(false)
             } else {
                 file.exists()
             }
@@ -164,14 +160,8 @@ class UpgradeDialog : DialogFragment() {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun installApkQ() {
         lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                if (!hasApkQ(true)) {
-                    copyApkToDownloadQ()
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
-                }
+            if (!hasApkQ(true)) {
+                copyApkToDownloadQ()
             }
         }
     }
@@ -215,13 +205,15 @@ class UpgradeDialog : DialogFragment() {
         val resolver = requireContext().contentResolver
         val uri = resolver.insert(
             MediaStore.Downloads.EXTERNAL_CONTENT_URI, values
-        ) ?: return
-        val out = resolver.openOutputStream(uri)
-        if (out != null) {
-            file.inputStream().copyTo(out)
-            file.delete()
-            setDownloadView()
-            withContext(Dispatchers.Main) { startInstallApk(uri) }
+        )
+        if (uri != null) {
+            val out = resolver.openOutputStream(uri)
+            if (out != null) {
+                file.inputStream().copyTo(out)
+                file.delete()
+                setDownloadView()
+                withContext(Dispatchers.Main) { startInstallApk(uri) }
+            }
         }
     }
 
