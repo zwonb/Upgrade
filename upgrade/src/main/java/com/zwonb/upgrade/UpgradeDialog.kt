@@ -90,7 +90,11 @@ class UpgradeDialog : DialogFragment() {
         lifecycleScope.launch(Dispatchers.Main) {
             downloadView.isEnabled = true
             val hasApk = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                hasApkQ(false)
+                try {
+                    hasApkQ(false)
+                } catch (e: Exception) {
+                    false
+                }
             } else {
                 file.exists()
             }
@@ -160,8 +164,14 @@ class UpgradeDialog : DialogFragment() {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun installApkQ() {
         lifecycleScope.launch(Dispatchers.IO) {
-            if (!hasApkQ(true)) {
-                copyApkToDownloadQ()
+            try {
+                if (!hasApkQ(true)) {
+                    copyApkToDownloadQ()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -176,7 +186,7 @@ class UpgradeDialog : DialogFragment() {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 val name =
-                    cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME))
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME))
                 if (name == file.name) {
                     hasApk = true
                     val id =
@@ -206,18 +216,12 @@ class UpgradeDialog : DialogFragment() {
         val uri = resolver.insert(
             MediaStore.Downloads.EXTERNAL_CONTENT_URI, values
         ) ?: return
-        try {
-            val out = resolver.openOutputStream(uri)
-            if (out != null) {
-                file.inputStream().copyTo(out)
-                file.delete()
-                setDownloadView()
-                withContext(Dispatchers.Main) { startInstallApk(uri) }
-            }
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
-            }
+        val out = resolver.openOutputStream(uri)
+        if (out != null) {
+            file.inputStream().copyTo(out)
+            file.delete()
+            setDownloadView()
+            withContext(Dispatchers.Main) { startInstallApk(uri) }
         }
     }
 
