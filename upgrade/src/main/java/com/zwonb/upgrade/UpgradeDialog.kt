@@ -212,12 +212,12 @@ class UpgradeDialog : DialogFragment() {
                 file.inputStream().copyTo(out)
                 file.delete()
                 setDownloadView()
-                withContext(Dispatchers.Main) {
-                    startInstallApk(uri)
-                }
+                withContext(Dispatchers.Main) { startInstallApk(uri) }
             }
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+            withContext(Dispatchers.Main) {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
