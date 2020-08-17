@@ -11,7 +11,7 @@ import androidx.annotation.Keep
 @Keep
 class UpgradeBean() : Parcelable {
 
-    var versionCode = 0
+    var versionCode: String? = "0"
     var versionName: String? = null
     var versionSize: String? = null
     var versionDate: String? = null
@@ -22,7 +22,7 @@ class UpgradeBean() : Parcelable {
         versionDate = parcel.readString()
         versionSize = parcel.readString()
         versionDownload = parcel.readString()
-        versionCode = parcel.readInt()
+        versionCode = parcel.readString()
         versionName = parcel.readString()
         versionBody = parcel.createTypedArrayList(UpgradeListBean)
     }
@@ -31,7 +31,7 @@ class UpgradeBean() : Parcelable {
         parcel.writeString(versionDate)
         parcel.writeString(versionSize)
         parcel.writeString(versionDownload)
-        parcel.writeInt(versionCode)
+        parcel.writeString(versionCode)
         parcel.writeString(versionName)
         parcel.writeTypedList(versionBody)
     }
