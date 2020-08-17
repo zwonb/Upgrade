@@ -33,7 +33,7 @@ import java.io.File
 class UpgradeDialog : DialogFragment() {
 
     private val bean by lazy(LazyThreadSafetyMode.NONE) {
-        arguments?.getParcelable<UpgradeBean>("bean")
+        arguments?.getSerializable("bean") as? UpgradeBean
     }
     private val file by lazy(LazyThreadSafetyMode.NONE) {
         File(
