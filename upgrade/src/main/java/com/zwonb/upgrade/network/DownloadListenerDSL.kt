@@ -6,19 +6,19 @@ package com.zwonb.upgrade.network
  */
 class DownloadListener {
 
-    internal lateinit var downloadBlock: (DownloadBean) -> Unit
-    internal lateinit var completeBlock: (DownloadBean) -> Unit
-    internal lateinit var errorBlock: (Throwable) -> Unit
+    internal lateinit var downloadBlock: suspend (DownloadBean) -> Unit
+    internal lateinit var completeBlock: suspend (DownloadBean) -> Unit
+    internal lateinit var errorBlock: suspend (Throwable) -> Unit
 
-    fun onDownload(block: (DownloadBean) -> Unit) {
+    fun onDownload(block: suspend (DownloadBean) -> Unit) {
         downloadBlock = block
     }
 
-    fun onComplete(block: (DownloadBean) -> Unit) {
+    fun onComplete(block: suspend (DownloadBean) -> Unit) {
         completeBlock = block
     }
 
-    fun onError(block: (e: Throwable) -> Unit) {
+    fun onError(block: suspend (e: Throwable) -> Unit) {
         errorBlock = block
     }
 }
